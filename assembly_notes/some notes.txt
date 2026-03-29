@@ -1,0 +1,108 @@
+Machine code debugging so far:
+
+b4 --> mov ah,
+b0 --> mov al,
+cd --> interrupt handler
+55 aa --> magic number
+
+
+----------------------------------------------------------------------------------
+
+CHAPTER 2:
+
+nasm line: nasm (asm file) -f bin -o (bin file name) 
+setup:
+
+times 510-($-$$) db 0
+dw 0xaa55
+
+(magic number to indicate that this is a bootloader)
+
+----------------------------------------------------------------------------------
+
+CHAPTER 3
+
+Most of the operations are done in real mode. (16 bit mode).
+
+3.3.1 --> Interrupts
+Interrupts are mechanisms that forces the CPU to halt and do some operations. The one
+we're using in CHAPTER 3 is the 0x10 (write to display) interrupt, and the 0x13
+(I/o interrupt service routine) interrupt are some that exist. 
+
+3.3.2 --> CPU registers
+CPU registers have 4 general purpose:
+ax, bx, cx, and dx. these are general purpose and can be used for everything.
+
+ALL follow format of:
+
+mov (register), (value)
+mov ax, 1234
+mov cx, 0x234
+mov dx, 't'
+mov bx, ax
+
+These registers are 'words' though (2 bytes), so we can divide to the high
+and low byte.
+
+mov ax , 0 ; ax -> 0 x0000 , or in binary 0000000000000000
+mov ah , 0 x56 ; ax -> 0 x5600
+mov al , 0 x23 ; ax -> 0 x5623
+mov ah , 0 x16 ; ax -> 0 x1623
+
+3.3.3 --> putting it all together
+
+jmp $ infinitely jumps to itself
+jmp loop jumps to loops
+
+3.4.2 --> "X" marks the spot
+
+Based on the code it wouldn't fucing work but here are some highlights:
+
+label:
+	db (define byte)
+
+org 0x7c00 (organize 0x7c00 as base for all operations)
+xor (excluded or) itself to initalize
+ds (data segment): register that tells CPU WHERE DATA LIVES IN MEMORY
+
+3.4.3 --> Defining strings
+
+(lowk like a trick but)
+
+defining strings is like:
+
+db 'Booting OS', 0
+
+but only defines the first byte.
+
+This is how you actually print a string:
+
+org 0x7C00		;still organizing
+
+xor ax, ax		;still initializing
+mov ds, ax		;same
+
+mov ah, 0x0E		;still teletyping
+
+mov si, the_string   ; SI = pointer to string THIS IS THE IMPORTANT ONE.
+
+print_loop:
+    mov al, [si]     ; load current character
+    cmp al, 0        ; is it the end? We zero indexed it, if you didn't know.
+    je done			 ; if equal move to done.
+
+    int 0x10         ; print it
+
+    inc si           ; move to next character
+    jmp print_loop   ; repeat the print_loop
+
+done:
+    jmp $
+
+the_string:
+    db 'Booting OS', 0
+
+times 510-($-$$) db 0
+dw 0xAA55
+
+yeah loops are sick
