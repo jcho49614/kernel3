@@ -128,3 +128,57 @@ jge target ; jump if greater than or equal ( i.e. x >= y )
 
 simple.
 
+3.4.6 --> calling functions
+
+"call", "return" for simpler code
+"pusha", "popa" push all and pop all registers to stack
+
+3.4.7 --> include files
+
+%include "lasdknlaknsd.asm" to include files. not that hard
+
+3.5.1 --> complete implementation of print_hex function.
+AND --> bitwise and,
+SHR --> bitwise shift
+i dont know i pretty much failed lmao
+
+3-6-1: Extended Memory Access using Segments
+All we're writing in our bootloader is first 512 bytes. Using BIOS, we allow ourself to manipulate data on the drives.
+
+when the CPU runs in 16 bit mode  --> 0xFFFF max address:
+64 KB total. Too small, so added registers
+
+"cs" "ds" "ss" "es", segment registers
+
+In essence, these are our OFFSETS, our DEFAULTS that our
+CPU can now access from 0x0000 to 0xffff. For example,
+if we mov ax, [0x45ef] instead of actual 0x45ef we would
+mov offset (data segment, ds) + 0x45ef. Similarly, the
+stack segment (ss) is used to offset the stack's base
+pointer, bs.
+
+Different segments could overlap.
+
+HOW OFFSETS WORK:
+CPU multiplies value in segment register by 16, adds offset
+
+eg: ds = 0x4d, CPU: 0x4d * 16 = 0x4d0
+mov ax, 0x001 ==> 0x4d0 + 0x001 = 0x4d1.
+
+ORG instead just makes entire math by 0x7c00, not something we want.
+
+CANNOT SET SEGMENT POINTERS DIRECTLY, USE EXISTING REGISTERS TO MODIFY
+
+mov bx, 0x7c0
+mov ds, bx                  ;ds is now 0x7c0.
+mov al, [the_secret]
+int 0x10
+
+the_secret:
+    db "X"
+
+will print it.
+
+3-6-2 --> How disk drives work
+just cylinders, heads, sectors of a hard disk. irrelevant today ig
+

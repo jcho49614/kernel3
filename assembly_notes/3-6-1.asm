@@ -1,0 +1,72 @@
+;im not going to include org 0x7c00 because i wanna try the pointer thing
+
+org 0 				;i commit to segment math
+xor ax, ax
+mov ax, 0x7c0
+mov ds, ax
+xor ax, ax
+;finished intialization, now onto printing
+
+mov ah, 0x0e
+
+mov si, the_secret
+
+call newline
+
+call print_loop
+
+mov si, the_second_secret
+
+call newline
+
+call print_loop
+
+mov si, the_third_secret
+
+call newline
+
+call print_loop
+
+the_secret:
+	db 'This is the secret.' ,0
+
+the_second_secret:
+	db 'This is the new secret.' ,0
+
+the_third_secret:
+	db 'Hello world!' ,0
+
+print_loop:
+	pusha
+
+	loop:
+		mov al, [si]
+		cmp al, 0
+		je done
+
+		mov ah, 0x0e	;will work! 0x7c0 as ds will probably make it okay
+		int 0x10
+		inc si
+		jmp loop
+
+	done:
+
+	popa
+
+	ret
+
+
+
+newline:
+	mov ah, 0x0e	;parantly need to do for all of it
+	mov al, 0x0d
+	int 0x10
+
+	mov al, 0x0a
+	int 0x10
+
+	ret
+
+
+times 510-($-$$) db 0
+dw 0xaa55
