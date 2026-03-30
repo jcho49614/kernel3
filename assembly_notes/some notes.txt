@@ -106,3 +106,25 @@ times 510-($-$$) db 0
 dw 0xAA55
 
 yeah loops are sick
+
+3.4.4 --> Using the stack
+
+There is 1 stack in the CPU. It uses push and pop.
+in 16 bit mode, you can only push and pop 16-bit boundaries
+cpu regiters bp and sp, stack base and stack top.
+stack grows downwards from base pointer, and sp is decreased by value's size.
+
+funny bc i learned that cx is the loop counter for loop function
+also i learned that its best to put stack pointers at 0x8000 so no overwrite
+
+3.4.5 --> control structures
+
+je target ; jump if equal ( i.e. x == y )
+jne target ; jump if not equal ( i.e. x != y )
+jl target ; jump if less than ( i.e. x < y )
+jle target ; jump if less than or equal ( i.e. x <= y )
+jg target ; jump if greater than ( i.e. x > y )
+jge target ; jump if greater than or equal ( i.e. x >= y )
+
+simple.
+
