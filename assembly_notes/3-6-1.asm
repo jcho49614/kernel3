@@ -10,21 +10,15 @@ xor ax, ax
 mov ah, 0x0e
 
 mov si, the_secret
-
 call newline
-
 call print_loop
 
 mov si, the_second_secret
-
 call newline
-
 call print_loop
 
 mov si, the_third_secret
-
 call newline
-
 call print_loop
 
 the_secret:
@@ -54,6 +48,10 @@ print_loop:
 	popa
 
 	ret
+
+
+print_hex_code:
+
 
 
 

@@ -182,3 +182,28 @@ will print it.
 3-6-2 --> How disk drives work
 just cylinders, heads, sectors of a hard disk. irrelevant today ig
 
+The sector is 512 bytes, then it's the head, then the cylinders
+
+3-6-3 --> using the BIOS to read the disk.
+
+the BIOS routine we use is calling int 0x13 after setting register
+al to 0x02.
+
+We now need to set "dl" (what drive), "ch" (cylinder), "dh" (track?), "cl" (the sector), and "al" (read al sectors from start point)
+
+its so fucking confusing
+
+Also, BIOS expects it to read it to ES:BX for some fucking reason, so
+general-purpose segment ES with offset BX
+
+mov bx, 0xa000
+mov es, bx
+mov bx, 0x1234
+
+Now the data will be read to 0xa000:0x1234, which CPU will translate to 0xa1234 (bc 0xa000 * 16 + 0x1234 = 0xa1234)
+
+now int 0x13. BIOS will now interrupt and actually read this shit.
+
+Entire thing is kinda bull but it works ig
+
+oh and also jc means "jump if carry flag"
