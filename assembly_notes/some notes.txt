@@ -207,3 +207,6 @@ now int 0x13. BIOS will now interrupt and actually read this shit.
 Entire thing is kinda bull but it works ig
 
 oh and also jc means "jump if carry flag"
+
+
+there is a carry flag function called "disk_error"
