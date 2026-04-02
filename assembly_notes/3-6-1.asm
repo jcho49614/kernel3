@@ -11,7 +11,7 @@
 org 0 				;i commit to segment math
 xor ax, ax
 mov ax, 0x7c0
-mov ds, ax
+mov ds, ax			;i kinda dont wanna do this its going to be confusing
 xor ax, ax
 ;finished intialization, now onto printing
 
@@ -31,20 +31,35 @@ mov si, the_third_secret
 call newline
 call print_loop
 
+mov si, msg
+call newline
+call print_loop
+
+call newline
+call print_hex_code
+
+mov bx, 0x5678
+
+call newline
+call print_hex_code
+
+mov bx, 0x9ABC
 call newline
 call print_hex_code
 ;the fuck it works
 
-the_secret:
-	db 'This is the secret.' ,0
+the_secret: db 'This is the secret.' ,0
 
-the_second_secret:
-	db 'This is the new secret.' ,0
+the_second_secret: db 'This is the new secret.' ,0
 
-the_third_secret:
-	db 'Hello world!' ,0
+the_third_secret: db 'Hello world!' ,0
+
+msg db 'testing the message method' ,0
 
 print_loop:
+	;REQUIREMENTS:
+	;this requires SI for string. Nothing else, really
+
 	pusha
 	loop:
 		mov al, [si]
@@ -62,6 +77,10 @@ print_loop:
 
 
 print_hex_code:
+	;REQUIREMENTS:
+	;this requires ax and bx. bx is the true input, ax is the general purpose
+	
+
 	;this is gong to take forever
 	;currently we're going to dedicate bx for hexcode.
 	push bx
@@ -75,6 +94,18 @@ print_hex_code:
 
 	mov al, bh
 	call print_hex_byte
+	
+	push ax
+	mov ah, 0x0e
+	mov al, ' '
+	int 0x10
+	pop ax
+	
+	;again something stupid
+	push si
+	mov si, print_0x
+	call print_loop
+	pop si
 
 	mov al, bl
 	call print_hex_byte

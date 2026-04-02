@@ -210,3 +210,7 @@ oh and also jc means "jump if carry flag"
 
 
 there is a carry flag function called "disk_error"
+
+oh and by the way I could just do:
+
+msg db 'hello, world!' ,0 and move msg to si for simplicity
