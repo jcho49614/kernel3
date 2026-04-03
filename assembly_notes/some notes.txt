@@ -214,3 +214,11 @@ there is a carry flag function called "disk_error"
 oh and by the way I could just do:
 
 msg db 'hello, world!' ,0 and move msg to si for simplicity
+
+It is at this point where I will write a functioning bootloader
+
+I also learned that 0x08 is move cursor back
+ax 0003h is clear screen, int 10h is do everything
+MATCH THE SECTOR NUMBERS WITH THE AMOUNT OF SECTORS IN STANDARDLIBRARY
+Teletype 0x0e works well enough for printing
+Now need to implement some sort of 
