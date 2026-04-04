@@ -169,3 +169,44 @@ ascii1: db '  ____   ____ _____ ' ,0
 ascii2: db ' / __ \ / ___|___ / ' ,0
 ascii3: db '| |  | |\___ \ |_ \ ' ,0
 ascii4: db ' \____/ |____/___/' ,0
+
+
+print_ram:
+	pusha
+	int 0x12						;interrupt 0x12 gives conventional memory count
+	call print_base10				;it just moves to ax for some reason
+	
+	mov si, ram1
+	call print_string
+	call newline
+	popa
+	ret
+	
+ram1: db 'KB RAM OK' ,0
+
+print_base10:
+	;this is like stressful to implmement
+	;ax = answer, dx = remainder, bx = divisor
+	pusha
+	xor dx, dx			;zero out the remainder
+	mov cx, dx
+	mov bx, 10			;number to divide by
+	.loop:
+		xor dx, dx		;constant initialization
+		div bx			;check if ax is zero
+		cmp ax, 0		;if ax is zero, we jmp to something
+		inc cx
+		add dx, '0'
+		push dx
+		cmp ax, 0
+		je .print
+		jmp .loop
+	.print:
+		pop dx				;pop a digit
+		mov al, dl			;mov to al
+		mov ah, 0x0e		;teletype
+		int 0x10
+		loop .print			;keep looping until cx runs out
+	popa
+	ret
+		

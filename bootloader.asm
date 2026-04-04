@@ -18,7 +18,7 @@ int 10h							;resets the display
 
 jmp load_kernel
 
-%include "standardlibrary.asm"
+%include "standardlibrary.asm"		;plan optimization later, 512kbs might require a different standardlibrary
 
 load_kernel:
 	mov ah, 0x02				;read mode

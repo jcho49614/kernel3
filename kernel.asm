@@ -16,6 +16,8 @@ main:
 	call print_string
 	call newline
 	
+	call print_ram
+	
 	call print_ascii
 	
 	call read_string
