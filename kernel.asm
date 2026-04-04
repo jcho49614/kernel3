@@ -12,18 +12,27 @@ main:
 	mov es, ax
 	mov ss, ax
 	mov sp, 0x7c00
-	mov si, msg
+	
+	;shitton of "introductory phrases here"
+	mov si, msg				;"entered kernel"
 	call print_string
 	call newline
+	call print_ram			;"Ram amount"
+	call print_himem		;"Is there himem?"
+	call print_ascii		;"OS3 ASCII code"
+	call os3_info			;"os3 information"
 	
-	call print_ram
-	
-	call print_ascii
-	
-	call read_string
+	.printloop:
+		mov si, commandpromptstart
+		call print_string
+		
+		mov si, input_buffer			;now will read in input buffer
+		call read_string
+		jmp .printloop
 	
 	jmp $
 	
 msg: db 'ENTERED KERNEL' ,0
+commandpromptstart: db '>> ' ,0
 
-times 512-($-$$) db 0
+times 2048-($-$$) db 0

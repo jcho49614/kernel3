@@ -143,9 +143,11 @@ read_string:
 		
 	.done:
 		mov cx, 0
-		mov si, 0
+		mov byte [si], 0
 		call newline
-		jmp .loop
+		pop si
+		pop cx
+		ret
 		
 		
 ;function 5 i think just printing cool ascii
@@ -207,6 +209,62 @@ print_base10:
 		mov ah, 0x0e		;teletype
 		int 0x10
 		loop .print			;keep looping until cx runs out
+		
+	;im going to check for himem cuz why the fuck not
+	;int 0x15	
 	popa
 	ret
+	
+print_himem:
+	pusha
+	mov ah, 0x88
+	int 0x15
+	cmp ax, 0
+	jg .himem
+	
+	mov si, himemmessage2
+	call print_string
+	call newline
+	
+	jmp .end
+	
+	.himem:
+		mov si, himemmessage1
+		call print_string
+		call newline
 		
+	.end:
+		popa
+		ret
+			
+himemmessage1: db 'HIMEM: DETECTED' ,0
+himemmessage2: db 'HIMEM: UNDETECTED' ,0	
+
+os3_info:
+	pusha
+	mov si, infomessage0
+	call print_string
+	call newline
+	mov si, infomessage1
+	call print_string
+	call newline
+	mov si, infomessage2
+	call print_string
+	call newline
+	mov si, infomessage3
+	call print_string
+	call newline
+	mov si, infomessage4
+	call print_string
+	call newline
+	popa
+	ret
+
+infomessage0: db '****************************************************************************' ,0
+infomessage1: db '| OS3 v0.0.1 Dev Beta                                                      |' ,0
+infomessage2: db '| A 16/32bit operating system by jcho49614                                 |' ,0
+infomessage3: db '| Visit https://github.com/jcho49614/kernel3 for more details and updates. |' ,0
+infomessage4: db '****************************************************************************' ,0
+
+
+input_buffer: times 64 db 0				;always should be at the end, this is input buffer
