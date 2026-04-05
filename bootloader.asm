@@ -22,7 +22,7 @@ jmp load_kernel
 
 load_kernel:
 	mov ah, 0x02				;read mode
-	mov al, 4					;2 sectors for kernel
+	mov al, 3				;2 sectors for kernel
 	mov ch, 0
 	mov cl, 2
 	mov dh, 0

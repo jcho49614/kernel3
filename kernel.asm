@@ -25,14 +25,15 @@ main:
 	.printloop:
 		mov si, commandpromptstart
 		call print_string
-		
 		mov si, input_buffer			;now will read in input buffer
 		call read_string
+		call process_output
+		call newline
 		jmp .printloop
 	
 	jmp $
 	
 msg: db 'ENTERED KERNEL' ,0
-commandpromptstart: db '>> ' ,0
+commandpromptstart: db 'SHELL16>> ' ,0
 
-times 2048-($-$$) db 0
+times 1536-($-$$) db 0

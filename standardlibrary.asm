@@ -2,7 +2,7 @@
 ;this is only going to have the bare minimum printing functions
 ;nothing else
 
-
+%include "16bitcommands.asm"
 
 ;FUNCTION NUMBER 1: PRINT FUNCTION
 ;required registers: si, ax (will be pushed so not really)
@@ -266,5 +266,80 @@ infomessage2: db '| A 16/32bit operating system by jcho49614                    
 infomessage3: db '| Visit https://github.com/jcho49614/kernel3 for more details and updates. |' ,0
 infomessage4: db '****************************************************************************' ,0
 
+;COMMAND INPUT
+;FORMAT: WORD1
+;THAT IS ALWAYS THE FORMAT
+;THERE CANNOT BE MORE
 
+;LIST OF COMMANDS:
+;OS3: Enters 32bit Real mode
+;Debug: prints the entirety of debug logs
+;Shutdown: shutdowns the 16bit mode
+
+process_output:
+	;first read the value on input_buffer
+	;then match it to di.
+	
+	mov si, input_buffer
+	
+	;COMMAND 1: "os3"
+	mov di, os3_command
+	call strcmp
+	jc .is_os3
+	
+	mov di, debug_command
+	call strcmp
+	jc .is_debug
+	
+	mov di, shutdown_command
+	call strcmp
+	jc .is_shutdown
+	
+	call function_nothing_16
+	ret
+
+	.is_os3:
+		call function_os3_16
+		ret
+	.is_debug:
+		call function_debug_16
+		ret
+	.is_shutdown:
+		call function_shutdown_16
+		ret
+		
+
+strcmp:
+	push si
+	push di
+	push ax
+	push bx
+	
+	.loop:
+		mov al, [si]
+		mov bl, [di]
+		cmp al, bl
+		jne .not_equal
+	
+		cmp al, 0
+		je .equal						;its "done" and flag stays 0. That means its the command
+		
+		inc si
+		inc di
+		jmp .loop
+		
+		.not_equal:
+			clc							;clear carry flag
+			jmp .done
+			
+		.equal:
+			stc							;set carry flag
+		
+		.done:
+			pop bx
+			pop ax
+			pop di
+			pop si
+			ret
+			
 input_buffer: times 64 db 0				;always should be at the end, this is input buffer
