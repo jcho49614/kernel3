@@ -15,9 +15,20 @@ function_debug_16:
 	;enter debug info here
 	;from top to bottom 1536 bytes
 	pusha
-	mov si, debugdialogue_1
-	call print_string
-	call newline
+	
+	;from 0x8000 to 0x8600. Change based on new sectors.
+	mov bx, 0x8000
+	mov cx, 0x0600
+	
+	.loop:
+		push bx
+		mov bx, [bx]
+		call print_hex
+		call newspace
+		pop bx
+		inc bx
+		loop .loop
+	
 	popa
 	ret
 	
