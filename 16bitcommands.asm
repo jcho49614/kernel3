@@ -33,9 +33,12 @@ function_shutdown_16:
 function_annabelle_16:
 	;enter "no command info" here
 	pusha
-	mov si, annabelledialogue_1
-	call print_string
-	call newline
+	mov cx, 1000
+	.loop:
+		mov si, annabelledialogue_1
+		call print_string
+		call newline
+		loop .loop
 	popa
 	ret
 
@@ -63,6 +66,6 @@ debugdialogue_1: db 'Enter debug mode here' ,0
 
 shutdowndialogue_1: db 'PANIC: SHUTDOWN FAILED. HALTING...' ,0
 
-annabelledialogue_1: db 'annabelleisabananabelle' ,0
+annabelledialogue_1: db 'annabelle is a bananabelle' ,0
 
 nothingdialogue_1: db 'Command does not exist' ,0
