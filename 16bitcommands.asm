@@ -41,12 +41,12 @@ function_shutdown_16:
 	call print_string
 	hlt
 	
-function_annabelle_16:
+function_jasmine_16:
 	;enter "no command info" here
 	pusha
-	mov cx, 1000
+	mov cx, 1
 	.loop:
-		mov si, annabelledialogue_1
+		mov si, jasminedialogue_1
 		call print_string
 		call newline
 		loop .loop
@@ -69,7 +69,7 @@ function_nothing_16:
 os3_command: db 'os3' ,0
 debug_command: db 'debug' ,0
 shutdown_command: db 'shutdown' ,0
-annabelle_command: db 'annabelle' ,0
+jasmine_command: db 'jasmine' ,0
 
 os3dialogue_1: db 'Shifting to Protected Mode...' ,0
 
@@ -77,6 +77,6 @@ debugdialogue_1: db 'Enter debug mode here' ,0
 
 shutdowndialogue_1: db 'PANIC: SHUTDOWN FAILED. HALTING...' ,0
 
-annabelledialogue_1: db 'annabelle is a bananabelle' ,0
+jasminedialogue_1: db 'hi jasmine' ,0
 
 nothingdialogue_1: db 'Command does not exist' ,0

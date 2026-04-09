@@ -295,9 +295,9 @@ process_output:
 	call strcmp
 	jc .is_shutdown
 	
-	mov di, annabelle_command
+	mov di, jasmine_command
 	call strcmp
-	jc .is_annabelle
+	jc .is_jasmine
 	
 	call function_nothing_16
 	ret
@@ -311,8 +311,8 @@ process_output:
 	.is_shutdown:
 		call function_shutdown_16
 		ret
-	.is_annabelle:
-		call function_annabelle_16
+	.is_jasmine:
+		call function_jasmine_16
 		ret
 		
 
